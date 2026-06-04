@@ -54,7 +54,6 @@ activities = {
     "Art Studio": {
         "description": "Painting, drawing, and digital art creation",
         "schedule": "Wednesdays, 3:30 PM - 5:00 PM",
-        "schedule": "Wednesdays, 3:30 PM - 5:00 PM",
         "max_participants": 18,
         "participants": ["isabella@mergington.edu", "ava@mergington.edu"]
     },
