@@ -20,19 +20,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const spotsLeft = details.max_participants - details.participants.length;
 
+        const escapeHTML = (value) =>
+          String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/\"/g, "&quot;")
+            .replace(/'/g, "&#39;");
+
+        const safeName = escapeHTML(name);
+        const safeDescription = escapeHTML(details.description);
+        const safeSchedule = escapeHTML(details.schedule);
+
         const participantsHTML = details.participants.length > 0
-          ? `<ul class="participants-list">${details.participants.map(p =>
-              `<li>
-                <span class="participant-email">${p}</span>
-                <button class="delete-btn" title="Unregister ${p}" data-activity="${name}" data-email="${p}">&#x1F5D1;</button>
-              </li>`
-            ).join("")}</ul>`
+          ? `<ul class="participants-list">${details.participants.map((p) => {
+              const safeEmail = escapeHTML(p);
+              return `<li>
+                <span class="participant-email">${safeEmail}</span>
+                <button class="delete-btn" type="button" aria-label="Unregister ${safeEmail}" title="Unregister ${safeEmail}" data-activity="${safeName}" data-email="${safeEmail}">&#x1F5D1;</button>
+              </li>`;
+            }).join("")}</ul>`
           : `<p class="no-participants">No participants yet. Be the first!</p>`;
 
         activityCard.innerHTML = `
-          <h4>${name}</h4>
-          <p>${details.description}</p>
-          <p><strong>Schedule:</strong> ${details.schedule}</p>
+          <h4>${safeName}</h4>
+          <p>${safeDescription}</p>
+          <p><strong>Schedule:</strong> ${safeSchedule}</p>
           <p><strong>Availability:</strong> ${spotsLeft} spots left</p>
           <div class="participants-section">
             <strong>Signed Up (${details.participants.length}/${details.max_participants}):</strong>
